@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🇹🇭 泰國之旅 · Kevin & 朋友</title>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #FFF8EE;
+    --cream2: #FFF0D6;
+    --cream3: #FFE8C0;
+    --orange: #E8843A;
+    --orange-dark: #C46828;
+    --orange-light: #F4A96A;
+    --brown: #5C3317;
+    --brown2: #7A4A22;
+    --brown3: #9E6035;
+    --text: #3A1F08;
+    --text2: #7A4A22;
+    --text3: #B07848;
+    --border: rgba(92,51,23,0.15);
+    --border2: rgba(92,51,23,0.08);
+    --green: #3A7D44;
+    --red: #C0392B;
+    --blue: #2471A3;
+    --purple: #6C3483;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Noto Sans TC', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    min-height: 100vh;
+  }
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse at 0% 0%, rgba(232,132,58,0.12) 0%, transparent 55%),
+      radial-gradient(ellipse at 100% 100%, rgba(232,132,58,0.10) 0%, transparent 55%);
+    pointer-events: none; z-index: 0;
+  }
+
+  .app { position: relative; z-index: 1; max-width: 920px; margin: 0 auto; padding: 0 1.25rem 5rem; }
+
+  /* HEADER */
+  .header {
+    padding: 2.5rem 0 1.75rem;
+    border-bottom: 1.5px solid var(--border);
+    margin-bottom: 1.75rem;
+    display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+  }
+  .trip-label {
+    font-family: 'Kanit', sans-serif;
+    font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--orange); margin-bottom: 6px;
+  }
+  .trip-title {
+    font-family: 'Kanit', sans-serif;
+    font-size: clamp(30px, 5vw, 44px); font-weight: 600;
+    color: var(--brown); line-height: 1;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .trip-dates {
+    font-size: 13px; color: var(--text2); margin-top: 10px;
+    display: flex; gap: 18px; flex-wrap: wrap;
+  }
+
+  /* STATS */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+    margin-bottom: 1.5rem;
+  }
+  .stat {
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 1.25rem 1.4rem;
+    box-shadow: 0 2px 8px rgba(92,51,23,0.06);
+  }
+  .stat-label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text3); margin-bottom: 6px; }
+  .stat-value { font-family: 'Kanit', sans-serif; font-size: 26px; font-weight: 600; color: var(--orange-dark); line-height: 1; }
+  .stat-sub { font-size: 11px; color: var(--text3); margin-top: 4px; }
+
+  /* SYNC BAR */
+  .sync-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 16px;
+    margin-bottom: 1.5rem;
+    font-size: 12px; flex-wrap: wrap; gap: 8px;
+    box-shadow: 0 1px 4px rgba(92,51,23,0.05);
+  }
+  .sync-left { display: flex; align-items: center; gap: 8px; color: var(--text2); }
+  .sync-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #27AE60; box-shadow: 0 0 6px #27AE60;
+    animation: pulse 2s infinite; flex-shrink: 0;
+  }
+  .sync-dot.offline { background: var(--text3); box-shadow: none; animation: none; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+  .room-id { font-family: 'Kanit', sans-serif; font-size: 13px; color: var(--orange-dark); font-weight: 600; }
+  .share-btn {
+    font-size: 12px; padding: 6px 14px;
+    border: 1.5px solid var(--orange);
+    border-radius: 8px; cursor: pointer;
+    background: transparent; color: var(--orange-dark);
+    transition: all 0.2s; font-family: 'Noto Sans TC', sans-serif;
+    font-weight: 500;
+  }
+  .share-btn:hover { background: var(--orange); color: white; }
+
+  /* TABS */
+  .tabs { display: flex; gap: 0; margin-bottom: 1.5rem; border-bottom: 1.5px solid var(--border); }
+  .tab {
+    font-family: 'Kanit', sans-serif;
+    font-size: 15px; padding: 10px 22px;
+    cursor: pointer; border: none; background: none;
+    color: var(--text3); border-bottom: 2.5px solid transparent;
+    margin-bottom: -1.5px; transition: all 0.2s; letter-spacing: 0.04em;
+  }
+  .tab.active { color: var(--orange-dark); border-bottom-color: var(--orange); }
+  .tab:hover:not(.active) { color: var(--brown2); }
+
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* ADD FORM */
+  .add-form {
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 1.25rem 1.4rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 8px rgba(92,51,23,0.05);
+  }
+  .form-title {
+    font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text3); margin-bottom: 12px; font-weight: 500;
+  }
+  .form-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .form-row input, .form-row select {
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 13px; padding: 8px 12px;
+    background: var(--cream);
+    color: var(--text);
+    border: 1.5px solid var(--border);
+    border-radius: 9px;
+    outline: none; transition: border-color 0.2s;
+  }
+  .form-row input:focus, .form-row select:focus { border-color: var(--orange); background: white; }
+  .form-row input::placeholder { color: var(--text3); }
+  .fi { flex: 1; min-width: 130px; }
+  .fw { width: 95px; }
+  .fs { width: 115px; }
+  .fd { width: 105px; }
+  .btn-submit {
+    font-family: 'Kanit', sans-serif;
+    font-size: 13px; padding: 8px 20px;
+    background: var(--orange); color: white;
+    border: none; border-radius: 9px; cursor: pointer;
+    font-weight: 500; transition: all 0.2s; letter-spacing: 0.04em;
+    white-space: nowrap; box-shadow: 0 2px 6px rgba(232,132,58,0.3);
+  }
+  .btn-submit:hover { background: var(--orange-dark); transform: translateY(-1px); box-shadow: 0 4px 10px rgba(232,132,58,0.35); }
+
+  /* CUR TOGGLE */
+  .cur-toggle { display: flex; gap: 4px; align-items: center; margin-bottom: 1rem; }
+  .cur-label { font-size: 11px; color: var(--text3); margin-right: 4px; }
+  .cur-btn {
+    font-size: 11px; padding: 4px 11px; border-radius: 7px;
+    border: 1.5px solid var(--border); cursor: pointer;
+    background: transparent; color: var(--text3);
+    font-family: 'Noto Sans TC', sans-serif; transition: all 0.2s;
+  }
+  .cur-btn.active { background: var(--orange); color: white; border-color: var(--orange); }
+
+  /* SECTION LABEL */
+  .section-label {
+    font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text3); margin-bottom: 10px; font-weight: 500;
+  }
+
+  /* ITEMS */
+  .items { display: flex; flex-direction: column; gap: 7px; }
+  .item {
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 16px;
+    display: flex; align-items: center; gap: 12px;
+    transition: all 0.2s; animation: fadeIn 0.25s ease;
+    box-shadow: 0 1px 4px rgba(92,51,23,0.04);
+  }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(-5px)} to{opacity:1;transform:none} }
+  .item:hover { border-color: var(--orange-light); box-shadow: 0 3px 10px rgba(232,132,58,0.1); }
+  .item-left { flex: 1; min-width: 0; }
+  .item-name { font-size: 14px; color: var(--text); font-weight: 500; }
+  .item-meta { font-size: 11px; color: var(--text3); margin-top: 4px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .item-right { display: flex; align-items: center; gap: 10px; }
+  .item-amt {
+    font-family: 'Kanit', sans-serif;
+    font-size: 18px; font-weight: 600; color: var(--orange-dark); white-space: nowrap;
+  }
+  .item-del {
+    background: none; border: none; cursor: pointer;
+    color: var(--text3); font-size: 18px; line-height: 1;
+    transition: color 0.2s; padding: 2px 4px; border-radius: 4px;
+  }
+  .item-del:hover { color: var(--red); background: #FDE8E8; }
+
+  .badge {
+    display: inline-block; font-size: 10px; padding: 2px 8px;
+    border-radius: 99px; font-weight: 500; letter-spacing: 0.04em;
+  }
+  .b-transport { background: #D6EAF8; color: var(--blue); }
+  .b-hotel { background: #E8DAEF; color: var(--purple); }
+  .b-food { background: #D5F5E3; color: var(--green); }
+  .b-activity { background: #FDEBD0; color: var(--orange-dark); }
+  .b-other { background: #F0EAE0; color: var(--brown3); }
+  .who-badge {
+    font-size: 10px; color: var(--brown2);
+    background: var(--cream2); padding: 2px 8px; border-radius: 99px;
+    border: 1px solid var(--border);
+  }
+
+  /* PLACES */
+  .day-group { margin-bottom: 1.5rem; }
+  .day-label {
+    font-family: 'Kanit', sans-serif;
+    font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text3); margin-bottom: 8px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .day-label::after { content:''; flex:1; height:1.5px; background: var(--border2); border-radius: 1px; }
+
+  .place {
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 16px;
+    display: flex; align-items: flex-start; gap: 12px;
+    transition: all 0.2s; animation: fadeIn 0.25s ease;
+    margin-bottom: 7px;
+    box-shadow: 0 1px 4px rgba(92,51,23,0.04);
+  }
+  .place:hover { border-color: var(--orange-light); box-shadow: 0 3px 10px rgba(232,132,58,0.1); }
+  .place-check {
+    width: 22px; height: 22px; border-radius: 50%;
+    border: 2px solid var(--border);
+    cursor: pointer; flex-shrink: 0; margin-top: 1px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s; background: white;
+  }
+  .place-check:hover { border-color: var(--orange); }
+  .place-check.done { background: var(--green); border-color: var(--green); }
+  .place-check.done::after { content:'✓'; font-size: 12px; color: white; font-weight: 600; }
+  .place-body { flex: 1; }
+  .place-name { font-size: 14px; font-weight: 500; color: var(--text); transition: all 0.2s; }
+  .place-name.done { text-decoration: line-through; color: var(--text3); }
+  .place-info { font-size: 11px; color: var(--text3); margin-top: 4px; }
+  .place-note { font-size: 11px; color: var(--orange-dark); font-style: italic; margin-top: 4px; background: var(--cream2); padding: 3px 8px; border-radius: 6px; display: inline-block; }
+
+  .empty {
+    text-align: center; padding: 3rem 1rem;
+    color: var(--text3); font-size: 13px; line-height: 2;
+  }
+  .empty-icon { font-size: 2.5rem; display: block; margin-bottom: 8px; }
+
+  /* MODAL */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(60,30,10,0.55); z-index: 100;
+    align-items: center; justify-content: center; padding: 1rem;
+    backdrop-filter: blur(4px);
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: white; border: 1.5px solid var(--border);
+    border-radius: 18px; padding: 2rem; max-width: 420px; width: 100%;
+    animation: fadeIn 0.2s ease; box-shadow: 0 20px 60px rgba(92,51,23,0.2);
+  }
+  .modal h3 { font-family: 'Kanit', sans-serif; font-size: 20px; color: var(--brown); margin-bottom: 8px; }
+  .modal p { font-size: 13px; color: var(--text2); margin-bottom: 16px; line-height: 1.7; }
+  .modal-url {
+    font-size: 12px; background: var(--cream); border: 1.5px solid var(--border);
+    border-radius: 9px; padding: 10px 12px; color: var(--text2);
+    word-break: break-all; margin-bottom: 14px;
+    font-family: 'Courier New', monospace;
+  }
+  .modal-btns { display: flex; gap: 8px; }
+  .modal-btn {
+    flex: 1; padding: 10px; border-radius: 9px; cursor: pointer;
+    font-family: 'Kanit', sans-serif; font-size: 14px; font-weight: 500;
+    border: 1.5px solid var(--border); transition: all 0.2s;
+  }
+  .modal-btn-primary { background: var(--orange); color: white; border-color: var(--orange); }
+  .modal-btn-primary:hover { background: var(--orange-dark); }
+  .modal-btn-secondary { background: transparent; color: var(--text2); }
+  .modal-btn-secondary:hover { border-color: var(--text2); color: var(--text); }
+
+  select option { background: white; }
+
+  @media (max-width: 600px) {
+    .fi,.fw,.fs,.fd { min-width: 100%; width: 100%; }
+    .btn-submit { width: 100%; }
+    .stat-value { font-size: 22px; }
+    .trip-dates { gap: 10px; font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="header">
+    <div>
+      <div class="trip-label">Travel Journal · 旅遊記帳</div>
+      <div class="trip-title">🇹🇭 泰國之旅</div>
+      <div class="trip-dates">
+        <span>📅 6/18（三）— 6/23（一）</span>
+        <span>🌙 6天5夜</span>
+        <span>👥 2人同行</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-label">總花費</div>
+      <div class="stat-value" id="s-total">฿0</div>
+      <div class="stat-sub" id="s-per">每人 ฿0</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">花費筆數</div>
+      <div class="stat-value" id="s-count">0</div>
+      <div class="stat-sub">筆記錄</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">最大支出</div>
+      <div class="stat-value" id="s-cat" style="font-size:18px;padding-top:4px;">—</div>
+      <div class="stat-sub" id="s-catamt"></div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">景點進度</div>
+      <div class="stat-value" id="s-places">0</div>
+      <div class="stat-sub" id="s-placedone">個待造訪</div>
+    </div>
+  </div>
+
+  <div class="sync-bar">
+    <div class="sync-left">
+      <div class="sync-dot" id="sync-dot"></div>
+      <span id="sync-status">共用房間：</span>
+      <span class="room-id" id="room-id-display">載入中...</span>
+    </div>
+    <button class="share-btn" onclick="openShareModal()">🔗 分享給朋友</button>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('expense',this)">💰 花費記錄</button>
+    <button class="tab" onclick="switchTab('places',this)">📍 景點清單</button>
+  </div>
+
+  <!-- EXPENSE -->
+  <div id="panel-expense" class="panel active">
+    <div class="cur-toggle">
+      <span class="cur-label">顯示：</span>
+      <button class="cur-btn active" id="cur-thb" onclick="setCur('THB')">฿ 泰銖</button>
+      <button class="cur-btn" id="cur-twd" onclick="setCur('TWD')">NT$ 台幣</button>
+    </div>
+    <div class="add-form">
+      <div class="form-title">新增花費</div>
+      <div class="form-row">
+        <input class="fi" type="text" id="e-name" placeholder="項目（如：機票、晚餐）" />
+        <input class="fw" type="number" id="e-amt" placeholder="金額" min="0" />
+        <select class="fs" id="e-cur">
+          <option value="THB">฿ 泰銖</option>
+          <option value="TWD">NT$ 台幣</option>
+        </select>
+        <select class="fs" id="e-cat">
+          <option value="transport">✈ 交通</option>
+          <option value="hotel">🏨 住宿</option>
+          <option value="food">🍜 餐飲</option>
+          <option value="activity">🎡 活動</option>
+          <option value="other">📦 其他</option>
+        </select>
+        <select class="fs" id="e-who">
+          <option value="共同">👥 共同</option>
+          <option value="Kevin">👤 Kevin</option>
+          <option value="朋友">👤 朋友</option>
+        </select>
+        <input class="fd" type="text" id="e-day" placeholder="6/18" />
+        <button class="btn-submit" onclick="addExpense()">＋ 新增</button>
+      </div>
+    </div>
+    <div class="section-label">所有記錄</div>
+    <div class="items" id="expense-list">
+      <div class="empty"><span class="empty-icon">💸</span>還沒有花費記錄<br>新增第一筆吧！</div>
+    </div>
+  </div>
+
+  <!-- PLACES -->
+  <div id="panel-places" class="panel">
+    <div class="add-form">
+      <div class="form-title">新增景點</div>
+      <div class="form-row">
+        <input class="fi" type="text" id="p-name" placeholder="景點名稱" />
+        <input class="fs" type="text" id="p-city" placeholder="城市（如 曼谷）" />
+        <input class="fd" type="text" id="p-day" placeholder="預計 6/19" />
+        <input class="fi" type="text" id="p-note" placeholder="備註（選填）" />
+        <button class="btn-submit" onclick="addPlace()">＋ 新增</button>
+      </div>
+    </div>
+    <div id="place-list">
+      <div class="empty"><span class="empty-icon">🗺️</span>還沒有景點<br>加入想去的地方吧！</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- SHARE MODAL -->
+<div class="modal-overlay" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <h3>🔗 分享給朋友</h3>
+    <p>把下面的連結傳給你的朋友，打開就能一起記帳、查景點，資料即時同步！</p>
+    <div class="modal-url" id="share-url">載入中...</div>
+    <div class="modal-btns">
+      <button class="modal-btn modal-btn-primary" id="copy-btn" onclick="copyUrl()">複製連結</button>
+      <button class="modal-btn modal-btn-secondary" onclick="closeModal()">關閉</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Constants ──
+const THB_TWD = 1.008;
+const catLabel = {transport:'交通',hotel:'住宿',food:'餐飲',activity:'活動',other:'其他'};
+const catBadge = {transport:'b-transport',hotel:'b-hotel',food:'b-food',activity:'b-activity',other:'b-other'};
+
+let displayCur = 'THB';
+let expenses = [];
+let places = [];
+let roomId = '';
+let lastSyncTs = 0;
+
+// ── Room ID ──
+function getRoomId() {
+  const p = new URLSearchParams(window.location.search);
+  if (p.get('room')) return p.get('room');
+  const id = 'thai-' + Math.random().toString(36).slice(2, 8);
+  const url = new URL(window.location.href);
+  url.searchParams.set('room', id);
+  window.history.replaceState({}, '', url);
+  return id;
+}
+
+// ── LocalStorage (fallback + offline) ──
+function saveLocal() {
+  try {
+    localStorage.setItem('trip-' + roomId, JSON.stringify({ expenses, places, ts: Date.now() }));
+  } catch(e) {}
+}
+function loadLocal() {
+  try {
+    const raw = localStorage.getItem('trip-' + roomId);
+    if (raw) {
+      const d = JSON.parse(raw);
+      expenses = d.expenses || [];
+      places = d.places || [];
+      lastSyncTs = d.ts || 0;
+      renderAll();
+    }
+  } catch(e) {}
+}
+
+// ── BroadcastChannel (same-device sync) ──
+let bc;
+function setupBroadcast() {
+  try {
+    bc = new BroadcastChannel('trip-' + roomId);
+    bc.onmessage = (e) => {
+      if (e.data && e.data.ts > lastSyncTs) {
+        expenses = e.data.expenses;
+        places = e.data.places;
+        lastSyncTs = e.data.ts;
+        renderAll();
+      }
+    };
+  } catch(e) {}
+}
+function broadcast() {
+  const payload = { expenses, places, ts: Date.now() };
+  lastSyncTs = payload.ts;
+  saveLocal();
+  if (bc) try { bc.postMessage(payload); } catch(e) {}
+  updateSyncStatus();
+}
+
+function updateSyncStatus() {
+  document.getElementById('sync-dot').className = 'sync-dot';
+  document.getElementById('sync-status').textContent = '房間 ID：';
+}
+
+// ── Currency ──
+function toDisplay(amt, cur) {
+  const inTHB = cur === 'THB' ? amt : amt / THB_TWD;
+  return displayCur === 'THB'
+    ? Math.round(inTHB).toLocaleString()
+    : Math.round(inTHB * THB_TWD).toLocaleString();
+}
+function sym() { return displayCur === 'THB' ? '฿' : 'NT$'; }
+
+function setCur(c) {
+  displayCur = c;
+  document.getElementById('cur-thb').className = 'cur-btn' + (c === 'THB' ? ' active' : '');
+  document.getElementById('cur-twd').className = 'cur-btn' + (c === 'TWD' ? ' active' : '');
+  renderExpenses();
+  updateStats();
+}
+
+// ── Stats ──
+function updateStats() {
+  const totalTHB = expenses.reduce((s, e) => s + (e.cur === 'THB' ? e.amt : e.amt / THB_TWD), 0);
+  const total = displayCur === 'THB' ? totalTHB : totalTHB * THB_TWD;
+  document.getElementById('s-total').textContent = sym() + Math.round(total).toLocaleString();
+  document.getElementById('s-per').textContent = '每人 ' + sym() + Math.round(total / 2).toLocaleString();
+  document.getElementById('s-count').textContent = expenses.length;
+
+  const byCat = {};
+  expenses.forEach(e => {
+    if (!byCat[e.cat]) byCat[e.cat] = 0;
+    byCat[e.cat] += (e.cur === 'THB' ? e.amt : e.amt / THB_TWD);
+  });
+  const top = Object.entries(byCat).sort((a, b) => b[1] - a[1])[0];
+  if (top) {
+    document.getElementById('s-cat').textContent = catLabel[top[0]];
+    const tv = displayCur === 'THB' ? top[1] : top[1] * THB_TWD;
+    document.getElementById('s-catamt').textContent = sym() + Math.round(tv).toLocaleString();
+  } else {
+    document.getElementById('s-cat').textContent = '—';
+    document.getElementById('s-catamt').textContent = '';
+  }
+
+  const done = places.filter(p => p.done).length;
+  document.getElementById('s-places').textContent = places.length;
+  document.getElementById('s-placedone').textContent = done + ' 個已完成';
+}
+
+// ── Expenses ──
+function renderExpenses() {
+  const el = document.getElementById('expense-list');
+  if (!expenses.length) {
+    el.innerHTML = '<div class="empty"><span class="empty-icon">💸</span>還沒有花費記錄<br>新增第一筆吧！</div>';
+    return;
+  }
+  el.innerHTML = expenses.map((e, i) => `
+    <div class="item">
+      <div class="item-left">
+        <div class="item-name">${e.name}</div>
+        <div class="item-meta">
+          <span class="badge ${catBadge[e.cat]}">${catLabel[e.cat]}</span>
+          <span class="who-badge">${e.who}</span>
+          ${e.day ? '<span>📅 ' + e.day + '</span>' : ''}
+          <span>原始：${e.cur === 'THB' ? '฿' : 'NT$'}${e.amt.toLocaleString()}</span>
+        </div>
+      </div>
+      <div class="item-right">
+        <span class="item-amt">${sym()}${toDisplay(e.amt, e.cur)}</span>
+        <button class="item-del" onclick="delExpense(${i})">×</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function addExpense() {
+  const name = document.getElementById('e-name').value.trim();
+  const amt = parseFloat(document.getElementById('e-amt').value);
+  if (!name || !amt) return;
+  expenses.unshift({
+    name, amt,
+    cur: document.getElementById('e-cur').value,
+    cat: document.getElementById('e-cat').value,
+    who: document.getElementById('e-who').value,
+    day: document.getElementById('e-day').value.trim(),
+    id: Date.now()
+  });
+  ['e-name', 'e-amt', 'e-day'].forEach(id => document.getElementById(id).value = '');
+  renderExpenses(); updateStats(); broadcast();
+}
+
+function delExpense(i) {
+  expenses.splice(i, 1);
+  renderExpenses(); updateStats(); broadcast();
+}
+
+// ── Places ──
+function renderPlaces() {
+  const el = document.getElementById('place-list');
+  if (!places.length) {
+    el.innerHTML = '<div class="empty"><span class="empty-icon">🗺️</span>還沒有景點<br>加入想去的地方吧！</div>';
+    return;
+  }
+  const groups = {};
+  places.forEach((p, i) => {
+    const k = p.day || '未指定日期';
+    if (!groups[k]) groups[k] = [];
+    groups[k].push({ ...p, i });
+  });
+  el.innerHTML = Object.entries(groups).sort().map(([day, ps]) => `
+    <div class="day-group">
+      <div class="day-label">📅 ${day}</div>
+      ${ps.map(p => `
+        <div class="place">
+          <div class="place-check ${p.done ? 'done' : ''}" onclick="togglePlace(${p.i})"></div>
+          <div class="place-body">
+            <div class="place-name ${p.done ? 'done' : ''}">${p.name}</div>
+            <div class="place-info">${p.city ? '📍 ' + p.city : ''}</div>
+            ${p.note ? '<div class="place-note">💬 ' + p.note + '</div>' : ''}
+          </div>
+          <button class="item-del" onclick="delPlace(${p.i})">×</button>
+        </div>
+      `).join('')}
+    </div>
+  `).join('');
+}
+
+function addPlace() {
+  const name = document.getElementById('p-name').value.trim();
+  if (!name) return;
+  places.push({
+    name,
+    city: document.getElementById('p-city').value.trim(),
+    day: document.getElementById('p-day').value.trim(),
+    note: document.getElementById('p-note').value.trim(),
+    done: false, id: Date.now()
+  });
+  ['p-name', 'p-city', 'p-day', 'p-note'].forEach(id => document.getElementById(id).value = '');
+  renderPlaces(); updateStats(); broadcast();
+}
+
+function togglePlace(i) {
+  places[i].done = !places[i].done;
+  renderPlaces(); updateStats(); broadcast();
+}
+
+function delPlace(i) {
+  places.splice(i, 1);
+  renderPlaces(); updateStats(); broadcast();
+}
+
+function renderAll() {
+  renderExpenses();
+  renderPlaces();
+  updateStats();
+}
+
+// ── Tab ──
+function switchTab(t, btn) {
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('panel-' + t).classList.add('active');
+}
+
+// ── Modal ──
+function openShareModal() {
+  document.getElementById('share-url').textContent = window.location.href;
+  document.getElementById('modal').classList.add('open');
+}
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+}
+function copyUrl() {
+  const url = window.location.href;
+  navigator.clipboard.writeText(url).then(() => {
+    const btn = document.getElementById('copy-btn');
+    btn.textContent = '✓ 已複製！';
+    setTimeout(() => btn.textContent = '複製連結', 2000);
+  }).catch(() => {
+    const el = document.getElementById('share-url');
+    el.select && el.select();
+    document.execCommand('copy');
+  });
+}
+
+// ── Init ──
+roomId = getRoomId();
+document.getElementById('room-id-display').textContent = roomId;
+setupBroadcast();
+loadLocal();
+updateStats();
+updateSyncStatus();
+</script>
+</body>
+</html>
